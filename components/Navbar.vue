@@ -77,8 +77,8 @@ const search = () => {
 
 // 🔔 Пример заглушки юзера (в реальности — использовать useAuth() или Vuex/pinia)
 const user = ref({
-  username: 'Crowz',
-  url: 'crowz',
+  username: 'admin',
+  url: 'admin',
 });
 
 // Логаут (заглушка)

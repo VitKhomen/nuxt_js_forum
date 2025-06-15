@@ -1,6 +1,9 @@
 html, body {
     height: 100%;
-    margin: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden;
+
   }
 
 body {
@@ -9,19 +12,6 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
-
-.main-content {
-    padding-top: 50px;
-    flex: 1;
-}
-
-.page-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  flex: 1;
-}
-
 
 .my-carousel h5{
     font-size: 40px;
@@ -43,6 +33,20 @@ body {
     height: 100%;
     object-fit: cover; /* главное — вот это! */
 }
+
+.main-content {
+    padding-top: 50px;
+    flex: 1;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  flex: 1;
+}
+
+
 
 .all-posts .card-img-top {
     height: 500px;

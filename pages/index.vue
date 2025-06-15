@@ -19,7 +19,7 @@
             </NuxtLink>
             <div class="card-body">
               <h4 class="card-title">{{ post.title }}</h4>
-              <p class="card-text" v-html="post.description.slice(0, 300)"></p>
+              <p class="card-text" v-html="post.description"></p>
               <div class="d-flex flex-wrap gap-1 mb-2">
                 <NuxtLink
                   v-for="tag in post.tags"
@@ -27,7 +27,7 @@
                   :to="`/tags/${tag}`"
                   class="badge bg-info text-dark"
                   >
-                  {{ tag }}
+                  #{{ tag }}
                 </NuxtLink>
               </div>
               <div class="d-flex justify-content-between align-items-center">

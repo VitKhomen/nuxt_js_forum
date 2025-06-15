@@ -7,7 +7,7 @@
         <NuxtLink :to="`/posts/${post.slug}`">
           <h3>{{ post.title }}</h3>
         </NuxtLink>
-        <p>{{ post.description.slice(0, 200) }}...</p>
+        <p v-html="post.description"></p>
       </div>
     </div>
     <div v-else>
@@ -22,7 +22,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const tagSlug = route.params.slug
 
-const { data } = await useFetch(`http://127.0.0.1:8000/api/posts/?tag=${tagSlug}`)
+const { data } = await useFetch(`http://127.0.0.1:8000/api/tags/${tagSlug}`)
 const posts = data.value?.results || []
 const tagName = tagSlug // или заменить на нормальное имя, если есть отдельный API для тега
 </script>
