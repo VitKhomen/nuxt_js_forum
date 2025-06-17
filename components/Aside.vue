@@ -41,12 +41,17 @@
 </template>
 
 <script setup>
-const { data: tagsData } = await useFetch('http://127.0.0.1:8000/api/tags')
-const { data: postsData } = await useFetch('http://127.0.0.1:8000/api/aside')
-
-const tags = tagsData.value || []
-const posts = postsData.value || []
-
+// Принимаем props
+defineProps({
+  tags: {
+    type: Array,
+    required: true
+  },
+  posts: {
+    type: Array,
+    required: true
+  }
+})
 </script>
 
 <style scoped>
