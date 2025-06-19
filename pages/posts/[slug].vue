@@ -37,7 +37,7 @@
         </div>
         <Comments />
       </div>
-      <Aside :tags="tags" :posts="recentPosts" />
+      <Aside :tags="blogStore.tags" :posts="blogStore.latestPosts" />
     </div>
   </div>
 </div>
@@ -47,25 +47,18 @@
 import { useRoute } from 'vue-router'
 import Header from '~/components/Header.vue'
 import Aside from '~/components/Aside.vue'
-
-// definePageMeta({
-//   layout: 'post_detail'
-// })
-
-const authUser = 'admin'
+import { useBlogStore } from '~/stores/blog'
 
 const route = useRoute()
 const postSlug = route.params.slug
 
-// Запрос по слагу, например: /posts/my-slug
-const { data: postData, error } = await useFetch(`http://127.0.0.1:8000/api/posts/${postSlug}`)
+// Получаем пост
+const { data: postData } = await useFetch(`http://127.0.0.1:8000/api/posts/${postSlug}`)
 const post = postData.value
 
-const { data: tagsData } = await useFetch('http://127.0.0.1:8000/api/tags')
-const { data: postsData } = await useFetch('http://127.0.0.1:8000/api/aside')
-
-const tags = tagsData.value || []
-const recentPosts = postsData.value || []
+// Загружаем данные aside через хранилище
+const blogStore = useBlogStore()
+await blogStore.fetchAsideData()
 
 function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString('ru-RU')

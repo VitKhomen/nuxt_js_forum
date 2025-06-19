@@ -41,16 +41,9 @@
 </template>
 
 <script setup>
-// Принимаем props
 defineProps({
-  tags: {
-    type: Array,
-    required: true
-  },
-  posts: {
-    type: Array,
-    required: true
-  }
+  tags: Array,
+  posts: Array,
 })
 </script>
 
