@@ -34,18 +34,19 @@
             </form>
 
             <div class="d-flex align-items-center flex-wrap justify-content-end text-center mb-2">
-              <template v-if="user">
+              <!-- Если пользователь залогинен -->
+              <template v-if="status === 'authenticated' && session">
                 <span class="navbar-text me-2 text-white">
-                  Привет, {{ user.username }}!
+                  Привет, {{ session.user.username }}!
                 </span>
-                <!-- <NuxtLink to="/posts/create" class="btn btn-outline-light btn-sm me-2">+ Пост</NuxtLink>
-                <NuxtLink :to="`/profile/${user.username}`" class="btn btn-outline-light btn-sm me-2">Профиль</NuxtLink> -->
-                <button to="/signout" class="btn btn-outline-light btn-sm me-2">Выход</button>
+                <NuxtLink to="/profile" class="btn btn-outline-light btn-sm me-2">Профиль</NuxtLink>
+                <button @click="logout" class="btn btn-outline-light btn-sm me-2">Выход</button>
               </template>
 
+              <!-- Если не залогинен -->
               <template v-else>
-                <NuxtLink to="/signin" class="btn btn-outline-light btn-sm me-2">Вход</NuxtLink>
-                <NuxtLink to="/signup" class="btn btn-outline-light btn-sm me-2">Регистрация</NuxtLink>
+                <NuxtLink to="/login" class="btn btn-outline-light btn-sm me-2">Вход</NuxtLink>
+                <NuxtLink to="/register" class="btn btn-outline-light btn-sm me-2">Регистрация</NuxtLink>
               </template>
             </div>
           </div>
@@ -59,35 +60,24 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-// Управление раскрытием меню
-const menuOpen = ref(false);
-const toggleMenu = () => {
-  menuOpen.value = !menuOpen.value;
-};
-
-// Поисковый ввод
-const q = ref('');
+const { status, data: session, signOut } = useAuth();
 const router = useRouter();
 
+// Поиск
+const q = ref('');
 const search = () => {
   if (q.value.trim()) {
     router.push(`/search?q=${encodeURIComponent(q.value)}`);
   }
 };
 
-// 🔔 Пример заглушки юзера (в реальности — использовать useAuth() или Vuex/pinia)
-const user = ref({
-  username: 'admin',
-  url: 'admin',
-});
-
-// Логаут (заглушка)
-const logout = () => {
-  alert('Пользователь вышел');
-  // Очистить токены и перенаправить, например: router.push('/login')
+// Выход
+const logout = async () => {
+  await signOut();
+  router.push('/login');
 };
 </script>
 
 <style scoped>
-/* Тебе можно оставить Bootstrap, но при желании сюда подключаются и кастомные стили */
+/* Ваши стили */
 </style>

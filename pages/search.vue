@@ -13,9 +13,11 @@
           v-for="post in posts"
           :key="post.slug"
         >
-          <h5 class="card-title">{{ post.title }}</h5>
+          <NuxtLink :to="`/posts/${post.slug}`" class="card-link">
+            <h5>{{ post.title }}</h5>
+          </NuxtLink>
           <p class="card-text" v-html="post.description"></p>
-          <NuxtLink :to="`/posts/${post.slug}`" class="card-link">Читать статью</NuxtLink>
+
         </div>
       </div>
     </div>

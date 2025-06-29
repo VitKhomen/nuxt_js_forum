@@ -1,8 +1,13 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
+  ssr: true,
   compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
-  modules: ['@pinia/nuxt'],
+
+  modules: [
+    '@sidebase/nuxt-auth',
+    '@pinia/nuxt',
+  ],
 
   css: [
     'bootstrap/dist/css/bootstrap.min.css',
@@ -22,4 +27,55 @@ export default defineNuxtConfig({
       ],
     },
   },
-});
+
+  
+  auth: {
+    baseURL: process.env.NUXT_PUBLIC_AUTH_BASE_URL,
+    provider: {
+      type: 'local',
+      token: {
+        signInResponseTokenPointer: '/access',
+        type: 'Bearer',
+        cookieName: 'auth.token',
+        headerName: 'Authorization',
+        maxAgeInSeconds: 1800,
+        sameSiteAttribute: 'lax',
+        secureCookieAttribute: false,
+        httpOnlyCookieAttribute: false,
+      },
+      refresh: {
+        isEnabled: true,
+        endpoint: { path: '/api/refresh_token/', method: 'post' },
+        refreshOnlyToken: true,
+        token: {
+          signInResponseRefreshTokenPointer: '/refresh',
+          refreshResponseTokenPointer: '/access',
+          refreshRequestTokenPointer: '/refresh',
+          cookieName: 'auth.token',
+          maxAgeInSeconds: 1800,
+          sameSiteAttribute: 'lax',
+          secureCookieAttribute: false,
+          httpOnlyCookieAttribute: false,
+        }
+      },
+      endpoints: {
+        signIn: { path: '/api/token/', method: 'post' },
+        signOut: { path: '/api/logout/', method: 'post' },
+        signUp: { path: '/api/register/', method: 'post' },
+        getSession: { path: '/api/profile/', method: 'get' }
+      },
+      pages: {
+        login: '/login'
+      },
+      session: {
+        dataType: {
+          user: {
+            id: 'string | number',
+            username: 'string',
+            email: 'string',
+          },
+        },
+      },
+    }
+  }
+})
