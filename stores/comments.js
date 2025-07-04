@@ -5,7 +5,6 @@ export const useCommentStore = defineStore('comments', () => {
   const isLoading = ref(false)
   const error = ref(null)
 
-  // Загрузка комментариев по slug
   async function fetchComments(slug) {
     isLoading.value = true
     error.value = null
@@ -20,8 +19,7 @@ export const useCommentStore = defineStore('comments', () => {
     }
   }
 
-  // Добавление комментария
-  async function addComment(slug, text) {
+  async function addComment(slug, text, token) {
     if (!text.trim()) return
 
     try {
@@ -29,10 +27,10 @@ export const useCommentStore = defineStore('comments', () => {
         method: 'POST',
         body: { text },
         headers: {
-          Authorization: 'Bearer <token>' // заменишь на реальный
-        }
+          Authorization: `Bearer ${token}`
+          }
       })
-      await fetchComments(slug) // обновляем после отправки
+      await fetchComments(slug)
     } catch (e) {
       error.value = e
     }

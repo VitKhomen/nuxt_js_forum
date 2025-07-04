@@ -10,12 +10,15 @@
 </template>
 
 <script setup>
+import { useAuth } from '#imports'
 import { useRoute } from 'vue-router'
 import Navbar from '~/components/Navbar.vue'
 import Slider from '~/components/Slider.vue'
 import Footer from '~/components/Footer.vue'
 
 const route = useRoute()
+useAuth()
+
 </script>
 
 <style>
