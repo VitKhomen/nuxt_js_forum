@@ -73,8 +73,11 @@ const search = () => {
 
 // Выход
 const logout = async () => {
-  await signOut();
-  router.push('/login');
+  try {
+    await signOut({ callbackUrl: '/' });
+  } catch (e) {
+    console.error('Logout error:', e)
+  }
 };
 </script>
 

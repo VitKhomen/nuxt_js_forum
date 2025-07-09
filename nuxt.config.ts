@@ -30,6 +30,7 @@ export default defineNuxtConfig({
 
   
   auth: {
+    globalAppMiddleware: true,
     baseURL: process.env.NUXT_PUBLIC_AUTH_BASE_URL,
     provider: {
       type: 'local',
@@ -44,8 +45,8 @@ export default defineNuxtConfig({
         httpOnlyCookieAttribute: false,
       },
       refresh: {
-        isEnabled: false,
-        endpoint: { path: '/api/refresh-token/', method: 'post' },
+        isEnabled: true,
+        endpoint: { path: '/api/refresh_token/', method: 'post' },
         refreshOnlyToken: true,
         token: {
           signInResponseRefreshTokenPointer: '/refresh',
@@ -65,7 +66,7 @@ export default defineNuxtConfig({
         getSession: { path: '/api/profile/', method: 'get' }
       },
       pages: {
-        login: '/login'
+        login: '/login',
       },
       session: {
         dataType: {
@@ -74,6 +75,8 @@ export default defineNuxtConfig({
             username: 'string',
             email: 'string',
           },
+          access: 'string',
+          refresh: 'string',
         },
       },
     }

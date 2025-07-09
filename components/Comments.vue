@@ -27,7 +27,7 @@
     <div v-else-if="commentStore.comments.length">
       <div v-for="comment in commentStore.comments" :key="comment.id" class="bg-light p-3 mb-3 rounded shadow-sm">
         <div class="d-flex">
-          <img :src="comment.avatar" class="rounded-circle" style="width: 100px; height: 100px;" />
+          <img :src="comment.author_avatar" class="rounded-circle" style="width: 100px; height: 100px;" />
           <div class="ms-3">
             <h5>{{ comment.author }}</h5>
             <small class="text-muted">{{ formatDate(comment.created_date) }}</small>

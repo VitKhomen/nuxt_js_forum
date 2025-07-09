@@ -3,6 +3,9 @@
 const { data: session, getSession, status } = useAuth()
 
 await getSession()
+const auth = useAuth()
+
+
 </script>
 
 <template>

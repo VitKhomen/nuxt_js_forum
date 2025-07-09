@@ -1,50 +1,57 @@
 <template>
-  <section class="my-contact-form">
+  <div>
+    <Header :title="'Вхід до акаунта'" />
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12">
-          <!-- Хлебные крошки -->
-          <nav aria-label="breadcrumb" class="my-4">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <NuxtLink to="/">Главная</NuxtLink>
-              </li>
-              <li class="breadcrumb-item active" aria-current="page">Регистрация</li>
-            </ol>
-          </nav>
-
           <div class="row justify-content-center">
             <div class="col-6">
-              <p class="lead">Заполните форму для регистрации нового пользователя</p>
+              <p class="lead">Заповніть форму для реєстрації нового користувача</p>
 
               <form @submit.prevent="handleSubmit">
-                <div class="mb-3" v-for="(value, field) in formData" :key="field">
-                  <label :for="field" class="form-label">{{ fieldLabels[field] }}</label>
-                  <input
-                    v-model="formData[field]"
-                    :id="field"
-                    :name="field"
-                    class="form-control"
-                    :type="fieldTypes[field] || 'text'"
-                  />
+                <!-- Текстовые поля -->
+                <template v-for="(value, field) in formData" :key="field">
+                  <div class="mb-3" v-if="field !== 'avatar'">
+                    <label :for="field" class="form-label">{{ fieldLabels[field] }}</label>
+                      <input
+                        v-model="formData[field]"
+                          :id="field"
+                          :name="field"
+                          class="form-control"
+                          :type="fieldTypes[field] || 'text'"
+                      />
+                    <div v-if="errors[field]" class="alert alert-danger py-1 px-2 my-error">
+                       {{ errors[field] }}
+                    </div>
+                  </div>
+                </template>
 
-                  <div
-                    v-if="errors[field]"
-                    class="alert alert-danger py-1 px-2 my-error"
-                  >
-                    {{ errors[field] }}
+                <!-- Поле для аватара -->
+                <div class="mb-3">
+                  <label for="avatar" class="form-label">Аватар</label>
+                  <input
+                    type="file"
+                    id="avatar"
+                    class="form-control"
+                    accept="image/*"
+                    @change="onFileChange"
+                  />
+                  <div v-if="errors.avatar" class="alert alert-danger py-1 px-2 my-error">
+                    {{ errors.avatar }}
                   </div>
                 </div>
 
-                <button type="submit" class="btn btn-success">✅ Зарегистрироваться</button>
+                <!-- Кнопка -->
+                <button type="submit" class="btn btn-success">✅ Зареєструватися</button>
               </form>
 
+              <!-- Сообщения об ошибке и успехе -->
               <div v-if="serverError" class="alert alert-danger mt-3">
                 {{ serverError }}
               </div>
 
               <div v-if="success" class="alert alert-success mt-3">
-                Регистрация прошла успешно! Теперь вы можете войти.
+                Реєстрація пройшла успішно! Тепер ви можете увійти.
               </div>
 
             </div>
@@ -52,21 +59,26 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { useFetch, useRuntimeConfig } from '#imports'
-import { navigateTo } from '#app'
+import { useAuth } from '#imports'
+import Header from '~/components/Header.vue'
 
-const config = useRuntimeConfig()
+definePageMeta({
+  auth: false
+})
+
+const { signUp, signIn } = useAuth()
 
 const formData = ref({
   username: '',
   email: '',
   password: '',
-  confirm_password: '',
+  password2: '',
+  avatar: null,
 })
 
 const errors = ref({})
@@ -74,42 +86,65 @@ const serverError = ref('')
 const success = ref(false)
 
 const fieldLabels = {
-  username: 'Имя пользователя',
+  username: 'Ім’я користувача',
   email: 'Email',
   password: 'Пароль',
-  confirm_password: 'Подтвердите пароль'
+  password2: 'Підтвердіть пароль'
 }
 
 const fieldTypes = {
   email: 'email',
   password: 'password',
-  confirm_password: 'password'
+  password2: 'password'
 }
 
+// Загрузка файла
+const onFileChange = (e) => {
+  const file = e.target.files[0]
+  if (file) {
+    formData.value.avatar = file
+  }
+}
+
+// Отправка формы
 const handleSubmit = async () => {
   errors.value = {}
   serverError.value = ''
   success.value = false
 
   try {
-    const { data, error } = await useFetch(`${config.auth.baseURL}/api/register/`, {
+    const payload = new FormData()
+    for (const key in formData.value) {
+      if (formData.value[key]) {
+        payload.append(key, formData.value[key])
+      }
+    }
+
+    const response = await fetch('http://localhost:8000/api/register/', {
       method: 'POST',
-      body: { ...formData.value }
+      body: payload,
     })
 
-    if (error.value) {
-      if (error.value.statusCode === 400 && error.value.data) {
-        errors.value = error.value.data
+    const data = await response.json()
+
+    if (!response.ok) {
+      if (response.status === 400) {
+        errors.value = data
       } else {
-        serverError.value = 'Ошибка регистрации. Попробуйте позже.'
+        serverError.value = 'Помилка реєстрації. Спробуйте пізніше.'
       }
-    } else {
-      success.value = true
-      // Можешь редиректить после успешной регистрации:
-      // await navigateTo('/login')
+      return
     }
+
+    // Автоматически логиним:
+    await signIn({
+      username: formData.value.username,
+      password: formData.value.password
+    }, { callbackUrl: '/' })
+
   } catch (err) {
-    serverError.value = 'Сетевая ошибка'
+    serverError.value = 'Мережева помилка. Спробуйте пізніше.'
+    console.error('Registration error:', err)
   }
 }
 </script>
