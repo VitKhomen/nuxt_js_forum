@@ -5,7 +5,9 @@ const { data: session, getSession, status } = useAuth()
 await getSession()
 const auth = useAuth()
 
-
+// definePageMeta({
+//   middleware: 'auth' // 👈 Вот так включается защита для этой конкретной страницы
+// })
 </script>
 
 <template>

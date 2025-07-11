@@ -31,10 +31,19 @@
           <div class="ms-3">
             <h5>{{ comment.author }}</h5>
             <small class="text-muted">{{ formatDate(comment.created_date) }}</small>
-            <p>{{ comment.text }}</p>
+
+            <!-- Если в режиме редактирования -->
+            <div v-if="editingId === comment.id">
+              <textarea v-model="editText" rows="3" class="form-control mb-2"></textarea>
+              <button @click="handleUpdate(comment.id)" class="btn btn-sm btn-success me-2">💾 Сохранить</button>
+              <button @click="cancelEdit" class="btn btn-sm btn-secondary">❌ Отмена</button>
+            </div>
+            <!-- Иначе обычный текст -->
+            <p v-else>{{ comment.text }}</p>
+
             <div v-if="comment.author === user.username">
-              <NuxtLink :to="`/comments/update/${comment.id}`" class="btn btn-sm btn-outline-primary">✏️</NuxtLink>
-              <NuxtLink :to="`/comments/delete/${comment.id}`" class="btn btn-sm btn-outline-danger">🗑️</NuxtLink>
+              <button @click="startEdit(comment)" class="btn btn-sm btn-outline-primary me-2">✏️</button>
+              <button @click="handleDelete(comment.id)" class="btn btn-sm btn-outline-danger">🗑️</button>
             </div>
           </div>
         </div>
@@ -59,8 +68,16 @@ const auth = useAuth()
 const isAuthenticated = computed(() => auth.status.value === 'authenticated')
 const user = computed(() => auth.data.value?.user || {})
 const newComment = ref('')
+const editingId = ref(null)
+const editText = ref('')
+
 
 onMounted(() => {
+  console.log('Slug:', slug)
+  if (!slug) {
+    console.error('Slug is undefined or null — невозможно отправить комментарий')
+    return;
+  }
   commentStore.fetchComments(slug)
 })
 
@@ -71,5 +88,39 @@ function formatDate(date) {
 async function submitComment() {
   await commentStore.addComment(slug, newComment.value, auth.token.value.replace(/^Bearer\s/, ''))
   newComment.value = ''
+}
+
+function startEdit(comment) {
+  editingId.value = comment.id
+  editText.value = comment.text
+}
+
+function cancelEdit() {
+  editingId.value = null
+  editText.value = ''
+}
+
+async function waitForToken() {
+  // Пример ожидания токена (если токен загружается асинхронно)
+  while (!auth.token.value) {
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+  return auth.token.value;
+}
+
+async function handleUpdate(id) {
+  const tokenValue = await waitForToken();
+  const token = tokenValue.replace(/^Bearer\s/, '');
+  await commentStore.updateComment(id, editText.value, token);
+  editingId.value = null;
+  editText.value = '';
+}
+
+async function handleDelete(id) {
+  if (confirm('Вы уверены, что хотите удалить этот комментарий?')) {
+    const tokenValue = await waitForToken();
+    const token = tokenValue.replace(/^Bearer\s/, '');
+    await commentStore.deleteComment(id, token);
+  }
 }
 </script>

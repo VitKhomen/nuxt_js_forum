@@ -1,7 +1,4 @@
 
 {
-  "extends": "./.nuxt/tsconfig.json",
-  "compilerOptions": {
-    "types": ["@sidebase/nuxt-auth"]
-  }
+  "extends": "./.nuxt/tsconfig.json"
 }

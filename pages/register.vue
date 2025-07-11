@@ -67,10 +67,6 @@ import { ref } from 'vue'
 import { useAuth } from '#imports'
 import Header from '~/components/Header.vue'
 
-definePageMeta({
-  auth: false
-})
-
 const { signUp, signIn } = useAuth()
 
 const formData = ref({
