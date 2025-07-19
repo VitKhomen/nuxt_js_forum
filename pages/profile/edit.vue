@@ -31,7 +31,6 @@ async function saveProfile() {
 <template>
   <div class="container mt-5">
     <h1>Редактирование профиля</h1>
-    <p class="text-danger">Вы на странице РЕДАКТИРОВАНИЯ.</p>
     <form @submit.prevent="saveProfile">
       <div class="mb-3">
         <label class="form-label">Имя пользователя</label>
@@ -46,7 +45,7 @@ async function saveProfile() {
       <div class="mb-3">
         <label class="form-label">Аватар</label>
         <input type="file"
-               @change="e => form.avatar = e.target.files[0]"
+               @change="e => form.avatar = (e.target as HTMLInputElement).files?.[0] || null"
                class="form-control" />
       </div>
 

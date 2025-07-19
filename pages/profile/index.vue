@@ -11,6 +11,7 @@ await postsStore.fetchUserPosts(profileStore.profile?.username)
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('ru-RU')
 }
+
 </script>
 
 <template>
