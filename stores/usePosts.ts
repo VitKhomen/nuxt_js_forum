@@ -1,32 +1,44 @@
-// stores/usePosts.ts
 import { defineStore } from 'pinia'
 
 interface PostsResponse {
-  results: Post[];  // Предположим, что Post — это тип одного поста
+  results: Post[]
 }
 
 interface Post {
-  id: number;
-  title: string;
-  content: string;
-  slug: string;
-  image: string;
-  description: string;
+  id: number
+  title: string
+  content: string
+  slug: string
+  image: string
+  description: string
 }
 
 export const usePostsStore = defineStore('posts', () => {
-  const posts = ref<PostsResponse['results']>([])
+  const posts = ref<Post[]>([])
 
-  const auth = useAuth()
-  const config = useRuntimeConfig()
-  const apiBase = config.public.apiBase
+  async function fetchUserPosts(auth: ReturnType<typeof useAuth>, username: string) {
+    if (auth.status.value !== 'authenticated') return
 
-  async function fetchUserPosts(username: string) {
+    const config = useRuntimeConfig()
+    const apiBase = config.public.apiBase
     const token = auth.token.value?.replace(/^Bearer\s/, '')
-    const { data } = await useFetch<PostsResponse>(`${apiBase}/users/${username}/posts/`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    posts.value = data.value?.results || []
+
+    if (!token) {
+      console.warn('⚠️ Нет токена, пользователь не авторизован')
+      return
+    }
+
+    try {
+      const response = await $fetch<PostsResponse>(`${apiBase}/users/${username}/posts/`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      posts.value = response.results
+    } catch (err) {
+      console.error('Ошибка загрузки постов пользователя:', err)
+    }
   }
 
   return { posts, fetchUserPosts }

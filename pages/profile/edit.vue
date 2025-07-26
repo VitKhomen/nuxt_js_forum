@@ -1,19 +1,36 @@
 <script setup lang="ts">
+import { reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useProfileStore } from '@/stores/useProfile'
 
+const router = useRouter()
+const auth = useAuth() // только тут
 
 const profileStore = useProfileStore()
-if (!profileStore.profile?.username) {
-  await profileStore.fetchProfile()
-}
 
 const form = reactive({
-  username: profileStore.profile.username,
-  email: profileStore.profile.email,
+  username: '',
+  email: '',
   avatar: null as File | null
 })
 
-const router = useRouter()
+async function initProfile() {
+  await auth.getSession()
+  if (auth.status.value !== 'authenticated') {
+    return navigateTo('/login')
+  }
+
+  await profileStore.fetchProfile(auth)
+
+  if (profileStore.profile) {
+    form.username = profileStore.profile.username
+    form.email = profileStore.profile.email
+  }
+}
+
+onMounted(() => {
+  initProfile()
+})
 
 async function saveProfile() {
   const data = new FormData()
@@ -23,8 +40,13 @@ async function saveProfile() {
     data.append('avatar', form.avatar)
   }
 
-  await profileStore.updateProfile(data)
-  router.push('/profile')
+  try {
+    await profileStore.updateProfile(auth, data)
+    router.push('/profile')
+  } catch (e) {
+    console.error('Ошибка при сохранении профиля:', e)
+    alert('Не удалось сохранить профиль')
+  }
 }
 </script>
 

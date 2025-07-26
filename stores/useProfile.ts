@@ -3,24 +3,39 @@ import { defineStore } from 'pinia'
 export const useProfileStore = defineStore('profile', () => {
   const profile = ref<any>(null)
 
-  const auth = useAuth()
-  const config = useRuntimeConfig()
-  const apiBase = config.public.apiBase
+  function setProfile(data: any) {
+    profile.value = data
+  }
 
-  async function fetchProfile() {
-    await auth.getSession()
+  async function fetchProfile(auth: ReturnType<typeof useAuth>) {
+
+    if (auth.status.value !== 'authenticated') {
+      profile.value = null
+      return
+    }
+
     profile.value = auth.data.value?.user || {}
   }
 
-  async function updateProfile(data: FormData) {
-    const token = auth.token.value?.replace(/^Bearer\s/, '')
+  async function updateProfile(auth: ReturnType<typeof useAuth>, data: FormData) {
+    const config = useRuntimeConfig()
+    const apiBase = config.public.apiBase
+
+
+    if (auth.status.value !== 'authenticated') {
+      throw new Error('Не авторизован')
+    }
+
     await $fetch(`${apiBase}/profile/`, {
       method: 'PUT',
       body: data,
-      headers: { Authorization: `Bearer ${token}` }
+      headers: {
+        Authorization: auth.token.value || ''
+      }
     })
-    await fetchProfile()
+
+    await fetchProfile(auth)
   }
 
-  return { profile, fetchProfile, updateProfile }
+  return { profile, setProfile, fetchProfile, updateProfile }
 })
