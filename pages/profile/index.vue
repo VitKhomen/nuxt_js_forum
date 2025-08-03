@@ -72,14 +72,41 @@ function formatDate(date: string) {
               class="col-md-4"
             >
               <div class="card mb-4 shadow-sm">
-                <NuxtLink :to="`/posts/${post.slug}`">
-                  <img :src="post.image" class="card-img-top" alt="..." />
+            <NuxtLink :to="`/posts/${post.slug}`">
+              <img
+                :src="post.image"
+                alt="Изображение поста"
+                class="card-img-top"
+              />
+            </NuxtLink>
+            <div class="card-body">
+              <h4 class="card-title">{{ post.title }}</h4>
+              <div class="card-text" v-html="post.description"></div>
+              <div class="d-flex flex-wrap gap-1 mb-2">
+                <NuxtLink
+                  v-for="tag in post.tags"
+                  :key="tag"
+                  :to="`/tags/${tag}`"
+                  class="badge bg-info text-dark"
+                  >
+                  #{{ tag }}
                 </NuxtLink>
-                <div class="card-body">
-                  <h5>{{ post.title }}</h5>
-                  <p v-html="post.description"></p>
-                </div>
               </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <NuxtLink
+                    :to="`/posts/${post.slug}`"
+                    class="btn btn-sm btn-outline-secondary"
+                  >
+                    Подробнее
+                  </NuxtLink>
+                </div>
+                <small class="text-muted">
+                  {{ formatDate(post.created_at) }}
+                </small>
+              </div>
+            </div>
+          </div>
             </div>
           </div>
         </div>

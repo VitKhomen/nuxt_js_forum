@@ -66,25 +66,15 @@ export default defineNuxtConfig({
         }
       },
       endpoints: {
-        signIn: { path: '/token/', method: 'post' },
-        signOut: { path: '/logout/', method: 'post' },
-        signUp: { path: '/register/', method: 'post' },
-        getSession: { path: '/profile/', method: 'get' }
+        signIn: { path: '/token/', method: 'POST' },
+        signOut: { path: '/logout/', method: 'POST' },
+        signUp: { path: '/register/', method: 'POST' },
+        getSession: { path: '/profile/', method: 'GET' }
       },
       pages: {
         login: '/login',
       },
-      session: {
-        dataType: {
-          user: {
-            id: 'string | number',
-            username: 'string',
-            email: 'string',
-          },
-          access: 'string',
-          refresh: 'string',
-        },
-      },
+      
     }
   }
 })

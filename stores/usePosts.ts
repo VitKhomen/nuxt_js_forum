@@ -11,6 +11,8 @@ interface Post {
   slug: string
   image: string
   description: string
+  tags: string
+  created_at: string
 }
 
 export const usePostsStore = defineStore('posts', () => {

@@ -56,7 +56,7 @@ const password = ref('')
 const error = ref<string | null>(null)
 
 const router = useRouter()
-const { signIn, status, token, refreshToken, data } = useAuth()
+const { signIn, status, token, data } = useAuth()
 
 const login = async () => {
   error.value = null;

@@ -1,3 +1,4 @@
+// Navbar.vue
 <template>
   <section class="my-navigation">
     <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" data-bs-theme="dark">
@@ -39,6 +40,9 @@
                 <span class="navbar-text me-2 text-white">
                   Привет, {{ session.user.username }}!
                 </span>
+                <NuxtLink to="/posts/create" class="btn btn-outline-light btn-sm me-2">
+                  + Пост
+                </NuxtLink>
                 <NuxtLink to="/profile" class="btn btn-outline-light btn-sm me-2">Профиль</NuxtLink>
                 <button @click="logout" class="btn btn-outline-light btn-sm me-2">Выход</button>
               </template>
@@ -62,6 +66,7 @@ import { useRouter } from 'vue-router';
 
 const { status, data: session, signOut } = useAuth();
 const router = useRouter();
+
 
 // Поиск
 const q = ref('');
