@@ -51,24 +51,70 @@
           <p class="text-center">Нет постов для отображения.</p>
         </div>
       </div>
+      <div v-if="totalPages > 1" class="row mt-4">
+  <div class="col-12">
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" :class="{ disabled: !data?.previous }">
+          <a class="page-link" href="#" @click.prevent="goToPage(page - 1)">Назад</a>
+        </li>
+
+        <li
+          v-for="p in totalPages"
+          :key="p"
+          class="page-item"
+          :class="{ active: p === page }"
+        >
+          <a class="page-link" href="#" @click.prevent="goToPage(p)">{{ p }}</a>
+        </li>
+
+        <li class="page-item" :class="{ disabled: !data?.next }">
+          <a class="page-link" href="#" @click.prevent="goToPage(page + 1)">Вперед</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
     </div>
   </section>
 </template>
 
 <script setup>
-// Автоматически доступен useFetch в Nuxt 3+
-const { data: postsData, pending, error } = await useFetch('http://127.0.0.1:8000/api/posts/')
-const posts = postsData.value?.results || []
-const props = defineProps({
-  posts: {
-    type: Array,
-    default: () => [],
-  },
+import { computed, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const config = useRuntimeConfig()
+const route = useRoute()
+const router = useRouter()
+
+// 1. Получаем номер текущей страницы из URL. По умолчанию — 1.
+const page = computed(() => parseInt(route.query.page || '1'))
+
+// 2. Формируем URL для API, включая номер страницы.
+const apiUrl = computed(() => `${config.public.apiBase}/posts/?page=${page.value}`)
+
+// 3. Выполняем запрос. Nuxt автоматически перезапросит данные, когда apiUrl изменится.
+const { data, pending, error } = await useFetch(apiUrl, {
+  // `watch` явно указывает Nuxt следить за изменением страницы
+  watch: [page]
 })
 
-// Форматирование даты
+// 4. Извлекаем данные из ответа API. Ответ DRF содержит count, next, previous, results
+const posts = computed(() => data.value?.results || [])
+const totalCount = computed(() => data.value?.count || 0)
+
+// 5. Вычисляем общее количество страниц для отображения кнопок
+const pageSize = 6; // Это значение из вашего бэкенда
+const totalPages = computed(() => Math.ceil(totalCount.value / pageSize))
+
+// 6. Функция для форматирования даты
 function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString('ru-RU')
+  return new Date(dateString).toLocaleDateString('uk-UA')
+}
+
+// 7. Функция для перехода на другую страницу
+function goToPage(pageNumber) {
+  router.push({ query: { page: pageNumber } })
 }
 </script>
 

@@ -1,35 +1,57 @@
 <script setup lang="ts">
+// pages/profile/index.vue -> <script setup lang="ts">
+
 import { useProfileStore } from '@/stores/useProfile'
 import { usePostsStore } from '@/stores/usePosts'
-import { onMounted, watch } from 'vue'
+import { onMounted, watch, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 // Инициализируем сторы
 const profileStore = useProfileStore()
 const postsStore = usePostsStore()
 
-const auth = useAuth()
+const route = useRoute()
 const router = useRouter()
+const auth = useAuth()
 
-// Используем useAsyncData для загрузки данных на сервере и клиенте
+// 1. Получаем номер текущей страницы из URL. По умолчанию — 1.
+const page = computed(() => parseInt(route.query.page as string || '1'))
+
+// 2. Вычисляем общее количество страниц, используя данные из стора
+const pageSize = 6;
+const totalPages = computed(() => Math.ceil(postsStore.totalCount / pageSize))
+
+// 3. Следим за изменением страницы в URL и вызываем экшен стора
+watch(page, (newPage) => {
+  // Загружаем посты для новой страницы, только если профиль уже загружен
+  if (profileStore.profile?.username) {
+    postsStore.fetchUserPosts(profileStore.profile.username, newPage)
+  }
+}, { immediate: true }) // immediate: true - чтобы watch сработал сразу при загрузке компонента
+
+// 4. Загружаем данные самого профиля при монтировании
 onMounted(async () => {
   await auth.getSession()
-
-  // Если не авторизован — редирект
   if (auth.status.value !== 'authenticated') {
     return router.push('/login')
   }
 
   await profileStore.fetchProfile(auth)
 
-  if (profileStore.profile?.username) {
-    await postsStore.fetchUserPosts(auth, profileStore.profile.username)
+  // После загрузки профиля, watch выше уже должен был запустить загрузку постов
+  // для первой страницы. Если нет, можно добавить вызов здесь.
+  if (profileStore.profile?.username && postsStore.posts.length === 0) {
+     await postsStore.fetchUserPosts(profileStore.profile.username, page.value)
   }
 })
 
-
-// Эта функция остаётся без изменений
 function formatDate(date: string) {
-  return new Date(date).toLocaleDateString('ru-RU')
+  return new Date(date).toLocaleDateString('uk-UA')
+}
+
+function goToPage(pageNumber: number) {
+  if (pageNumber < 1 || pageNumber > totalPages.value) return;
+  router.push({ query: { page: pageNumber } })
 }
 </script>
 
@@ -112,5 +134,24 @@ function formatDate(date: string) {
         </div>
       </section>
     </div>
+    <div v-if="totalPages > 1" class="row mt-4">
+  <div class="col-12">
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" :class="{ disabled: !postsStore.prevPageUrl }">
+          <a class="page-link" href="#" @click.prevent="goToPage(page - 1)">Назад</a>
+        </li>
+
+        <li v-for="p in totalPages" :key="p" class="page-item" :class="{ active: p === page }">
+          <a class="page-link" href="#" @click.prevent="goToPage(p)">{{ p }}</a>
+        </li>
+
+        <li class="page-item" :class="{ disabled: !postsStore.nextPageUrl }">
+          <a class="page-link" href="#" @click.prevent="goToPage(page + 1)">Вперед</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
   </div>
 </template>
