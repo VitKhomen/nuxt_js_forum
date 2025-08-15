@@ -116,6 +116,17 @@ function formatDate(dateString) {
 function goToPage(pageNumber) {
   router.push({ query: { page: pageNumber } })
 }
+
+useHead({
+  title: 'Главная страница форума',
+  meta: [
+    { name: 'description', content: 'Гловна сторінка.' },
+    { name: 'keywords', content: 'блог, nuxt, форум, пупупу' },
+  ],
+  link: [
+    { rel: 'canonical', href: 'http://localhost:8000/' }
+  ]
+})
 </script>
 
 <style scoped>

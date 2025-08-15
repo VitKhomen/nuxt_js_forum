@@ -5,17 +5,15 @@
 </template>
 
 <script setup lang="ts">
-import { useAuth } from '#imports'
-import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
 
 const { signOut } = useAuth()
-const router = useRouter()
 
-const logout = async () => {
-  try {
-    await signOut({ callbackUrl: '/' }) // не передаем URL вручную
-  } catch (e) {
-    console.error('Logout error:', e)
-  }
-}
+onMounted(async () => {
+    try {
+      await signOut({ callbackUrl: '/' })
+    } catch (e) {
+      console.error('Logout error:', e)
+    }
+  })
 </script>

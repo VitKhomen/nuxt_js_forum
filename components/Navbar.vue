@@ -44,7 +44,7 @@
                   + Пост
                 </NuxtLink>
                 <NuxtLink to="/profile" class="btn btn-outline-light btn-sm me-2">Профиль</NuxtLink>
-                <button @click="logout" class="btn btn-outline-light btn-sm me-2">Выход</button>
+                <NuxtLink to="logout" class="btn btn-outline-light btn-sm me-2">Выход</NuxtLink>
               </template>
 
               <!-- Если не залогинен -->
@@ -64,7 +64,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const { status, data: session, signOut } = useAuth();
+const { status, data: session } = useAuth();
 const router = useRouter();
 
 
@@ -76,14 +76,7 @@ const search = () => {
   }
 };
 
-// Выход
-const logout = async () => {
-  try {
-    await signOut({ callbackUrl: '/' });
-  } catch (e) {
-    console.error('Logout error:', e)
-  }
-};
+
 </script>
 
 <style scoped>

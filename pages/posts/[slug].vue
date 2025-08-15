@@ -89,4 +89,70 @@ async function deletePost() {
 function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString('ru-RU')
 }
+
+useHead({
+  // Заголовок вкладки и основной SEO-заголовок
+  title: post.title,
+  meta: [
+    {
+      // Краткое описание для сниппета в поиске
+      name: 'description',
+      content: post.description || post.content.slice(0, 160) // Если нет отдельного description
+    },
+    {
+      name: 'keywords',
+      content: post.tags?.join(', ') || ''
+    },
+    
+    // Open Graph — для Facebook, Telegram и т.п.
+    {
+      property: 'og:title',
+      content: post.title
+    },
+    {
+      property: 'og:description',
+      content: post.description || post.content.slice(0, 160)
+    },
+    {
+      property: 'og:type',
+      content: 'article'
+    },
+    {
+      property: 'og:url',
+      content: `http://localhost:8000/posts/${post.slug}` // заменить на прод. URL
+    },
+    {
+      property: 'og:image',
+      content: post.image || 'https://example.com/default.jpg'
+    },
+    {
+      property: 'og:image:alt',
+      content: post.title
+    },
+    	// Отображение поста в Twitter
+    {
+      name: 'twitter:card',
+      content: 'summary_large_image'
+    },
+    {
+      name: 'twitter:title',
+      content: post.title
+    },
+    {
+      name: 'twitter:description',
+      content: post.description || post.content.slice(0, 160)
+    },
+    {
+      name: 'twitter:image',
+      content: post.image || 'https://example.com/default.jpg'
+    }
+  ],
+  	// Указывает канонический URL (важно для SEO, если есть дубли)
+  link: [
+    {
+      rel: 'canonical',
+      href: `http://localhost:8000/posts/${post.slug}`
+    }
+  ]
+})
 </script>

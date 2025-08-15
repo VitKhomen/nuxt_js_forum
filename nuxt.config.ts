@@ -29,6 +29,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    authSecret: process.env.AUTH_SECRET,
     public: {
       apiBase: process.env.NUXT_PUBLIC_AUTH_BASE_URL,
     },
@@ -67,7 +68,7 @@ export default defineNuxtConfig({
       },
       endpoints: {
         signIn: { path: '/token/', method: 'POST' },
-        signOut: { path: '/logout/', method: 'POST' },
+        signOut: { path: '/logout/', method: 'POST', withCredentials: true, },
         signUp: { path: '/register/', method: 'POST' },
         getSession: { path: '/profile/', method: 'GET' }
       },
