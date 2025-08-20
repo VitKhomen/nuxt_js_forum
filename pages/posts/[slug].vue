@@ -54,10 +54,11 @@ const authUser = auth.data.value?.user.username
 const route = useRoute()
 const router = useRouter()
 const postSlug = route.params.slug
-const config = useRuntimeConfig()
+const config = useRuntimeConfig() // Получаем доступ к конфигу
+const apiBase = config.public.apiBase // Наш базовый URL
 
 // Получаем пост
-const { data: postData } = await useFetch(`${config.public.apiBase}/posts/${postSlug}/`)
+const { data: postData } = await useFetch(`${apiBase}/posts/${postSlug}/`)
 const post = postData.value
 
 // Загружаем данные aside через хранилище

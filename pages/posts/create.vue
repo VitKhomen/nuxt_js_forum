@@ -43,7 +43,8 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const auth = useAuth()
-const config = useRuntimeConfig()
+const config = useRuntimeConfig() // Получаем доступ к конфигу
+const apiBase = config.public.apiBase // Наш базовый URL
 
 interface Post {
   id: number
@@ -82,7 +83,7 @@ async function createPost() {
   }
 
   try {
-    await $fetch<Post>(`${config.public.apiBase}/posts/`, {
+    await $fetch<Post>(`${apiBase}/posts/`, {
       method: 'POST',
       body: data,
       headers: {

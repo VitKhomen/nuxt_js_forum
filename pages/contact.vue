@@ -83,6 +83,9 @@ const form = ref({
   message: '',
 })
 
+const config = useRuntimeConfig() // Получаем доступ к конфигу
+const apiBase = config.public.apiBase // Наш базовый URL
+
 // Ошибки и сообщение
 const errors = ref({})
 const successMessage = ref('')
@@ -94,7 +97,7 @@ async function submitForm() {
   successMessage.value = ''
 
   try {
-    await $fetch('http://127.0.0.1:8000/api/contacts/', {
+    await $fetch(`${apiBase}/contacts/`, {
       method: 'POST',
       body: form.value,
       headers: {

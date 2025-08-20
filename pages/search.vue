@@ -35,6 +35,8 @@ const q = computed(() => route.query.q || '')
 const postsData = ref(null)
 const error = ref(null)
 const pending = ref(false)
+const config = useRuntimeConfig() // Получаем доступ к конфигу
+const apiBase = config.public.apiBase // Наш базовый URL
 
 watchEffect(async () => {
   if (!q.value) {
@@ -45,7 +47,7 @@ watchEffect(async () => {
   pending.value = true
   error.value = null
   try {
-    const { data } = await useFetch(`http://127.0.0.1:8000/api/posts/?search=${encodeURIComponent(q.value)}`, { key: q.value }) // ключ важен
+    const { data } = await useFetch(`${apiBase}/posts/?search=${encodeURIComponent(q.value)}`, { key: q.value }) // ключ важен
     postsData.value = data.value
   } catch (e) {
     error.value = e

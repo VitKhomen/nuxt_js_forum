@@ -3,6 +3,8 @@ import { defineStore } from 'pinia'
 export const useBlogStore = defineStore('blog', () => {
   const tags = ref([])
   const latestPosts = ref([])
+  const config = useRuntimeConfig() // Получаем доступ к конфигу
+  const apiBase = config.public.apiBase // Наш базовый URL
 
   const isLoaded = ref(false)
 
@@ -10,8 +12,8 @@ export const useBlogStore = defineStore('blog', () => {
     if (isLoaded.value) return // чтобы не загружать повторно
 
     const [tagsData, postsData] = await Promise.all([
-      useFetch('http://127.0.0.1:8000/api/tags'),
-      useFetch('http://127.0.0.1:8000/api/aside')
+      useFetch(`${apiBase}/tags`),
+      useFetch(`${apiBase}/aside`)
     ])
 
     tags.value = tagsData.data.value || []

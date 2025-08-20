@@ -44,7 +44,8 @@ import { useRoute, useRouter } from 'vue-router'
 const auth = useAuth()
 const route = useRoute()
 const router = useRouter()
-const config = useRuntimeConfig()
+const config = useRuntimeConfig() // Получаем доступ к конфигу
+const apiBase = config.public.apiBase // Наш базовый URL
 
 const slug = route.params.slug as string
 const form = ref<any>(null)
@@ -87,7 +88,7 @@ onMounted(async () => {
   }
 
   try {
-    const post = await $fetch<Post>(`${config.public.apiBase}/posts/${slug}`)
+    const post = await $fetch<Post>(`${apiBase}/posts/${slug}`)
     // Проверка авторства
      // ++ ИСПОЛЬЗУЕМ УТВЕРЖДЕНИЕ ТИПА ДЛЯ AUTH.DATA
     const currentUser = (auth.data.value as Session)?.user?.username
@@ -128,7 +129,7 @@ async function savePost() {
   }
 
   try {
-    await $fetch(`${config.public.apiBase}/posts/${slug}/`, {
+    await $fetch(`${apiBase}/posts/${slug}/`, {
       method: 'PATCH',
       body: data,
       headers: {

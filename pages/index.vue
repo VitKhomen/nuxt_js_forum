@@ -83,7 +83,8 @@
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-const config = useRuntimeConfig()
+const config = useRuntimeConfig() // Получаем доступ к конфигу
+const apiBase = config.public.apiBase // Наш базовый URL
 const route = useRoute()
 const router = useRouter()
 
@@ -91,7 +92,7 @@ const router = useRouter()
 const page = computed(() => parseInt(route.query.page || '1'))
 
 // 2. Формируем URL для API, включая номер страницы.
-const apiUrl = computed(() => `${config.public.apiBase}/posts/?page=${page.value}`)
+const apiUrl = computed(() => `${apiBase}/posts/?page=${page.value}`)
 
 // 3. Выполняем запрос. Nuxt автоматически перезапросит данные, когда apiUrl изменится.
 const { data, pending, error } = await useFetch(apiUrl, {

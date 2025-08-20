@@ -80,6 +80,9 @@ const formData = ref({
 const errors = ref({})
 const serverError = ref('')
 const success = ref(false)
+const config = useRuntimeConfig() // Получаем доступ к конфигу
+const apiBase = config.public.apiBase // Наш базовый URL
+
 
 const fieldLabels = {
   username: 'Ім’я користувача',
@@ -116,7 +119,7 @@ const handleSubmit = async () => {
       }
     }
 
-    const response = await fetch('http://localhost:8000/api/register/', {
+    const response = await fetch(`${apiBase}/register/`, {
       method: 'POST',
       body: payload,
     })
