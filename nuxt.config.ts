@@ -32,6 +32,7 @@ export default defineNuxtConfig({
     authSecret: process.env.AUTH_SECRET,
     public: {
       apiBase: process.env.NUXT_PUBLIC_AUTH_BASE_URL,
+      publicURL: process.env.NUXT_PUBLIC_SITE_URL
     },
   },
 

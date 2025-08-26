@@ -1,7 +1,7 @@
 <template>
   <section class="all-posts">
     <div class="container">
-      <h1 class="my-4 text-center">Последние записи блога</h1>
+      <h1 class="my-4 text-center">Останні пости</h1>
       <div class="row">
         <div
           v-if="posts.length"
@@ -13,7 +13,7 @@
             <NuxtLink :to="`/posts/${post.slug}`">
               <img
                 :src="post.image"
-                alt="Изображение поста"
+                alt="Зображення поста"
                 class="card-img-top"
               />
             </NuxtLink>
@@ -36,7 +36,7 @@
                     :to="`/posts/${post.slug}`"
                     class="btn btn-sm btn-outline-secondary"
                   >
-                    Подробнее
+                    Детальніше
                   </NuxtLink>
                 </div>
                 <small class="text-muted">
@@ -48,7 +48,7 @@
         </div>
 
         <div v-else class="col-12">
-          <p class="text-center">Нет постов для отображения.</p>
+          <p class="text-center">Немає постів для відображення</p>
         </div>
       </div>
       <div v-if="totalPages > 1" class="row mt-4">
@@ -83,49 +83,50 @@
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-const config = useRuntimeConfig() // Получаем доступ к конфигу
-const apiBase = config.public.apiBase // Наш базовый URL
+const config = useRuntimeConfig()
+const apiBase = config.public.apiBase 
+const publicURL = config.public.publicURL
 const route = useRoute()
 const router = useRouter()
 
-// 1. Получаем номер текущей страницы из URL. По умолчанию — 1.
+// 1. Получаємо номер текущей сторінки  URL. По дефолту — 1.
 const page = computed(() => parseInt(route.query.page || '1'))
 
-// 2. Формируем URL для API, включая номер страницы.
+// 2. Формуємо URL для API, включая номер сторінки.
 const apiUrl = computed(() => `${apiBase}/posts/?page=${page.value}`)
 
-// 3. Выполняем запрос. Nuxt автоматически перезапросит данные, когда apiUrl изменится.
+// 3. Робимо запрос. Nuxt автоматично оновить данні, коли apiUrl змінеться.
 const { data, pending, error } = await useFetch(apiUrl, {
-  // `watch` явно указывает Nuxt следить за изменением страницы
+  // `watch` явно вказує Nuxt слідкувати за зміною сторінки
   watch: [page]
 })
 
-// 4. Извлекаем данные из ответа API. Ответ DRF содержит count, next, previous, results
+// 4. Дістаємо  данні із відповіді API. Відповіть DRF - count, next, previous, results
 const posts = computed(() => data.value?.results || [])
 const totalCount = computed(() => data.value?.count || 0)
 
-// 5. Вычисляем общее количество страниц для отображения кнопок
-const pageSize = 6; // Это значение из вашего бэкенда
+// 5. Вираховуємо кількість сторінок для відображення кнопок
+const pageSize = 6;
 const totalPages = computed(() => Math.ceil(totalCount.value / pageSize))
 
-// 6. Функция для форматирования даты
+// 6. Функція для формата дати
 function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString('uk-UA')
 }
 
-// 7. Функция для перехода на другую страницу
+// 7. Функція для перехіда на іншу сторінку
 function goToPage(pageNumber) {
   router.push({ query: { page: pageNumber } })
 }
 
 useHead({
-  title: 'Главная страница форума',
+  title: 'Головна сторінка форума',
   meta: [
     { name: 'description', content: 'Гловна сторінка.' },
     { name: 'keywords', content: 'блог, nuxt, форум, пупупу' },
   ],
   link: [
-    { rel: 'canonical', href: 'http://localhost:8000/' }
+    { rel: 'canonical', href: `${publicURL}` }
   ]
 })
 </script>

@@ -6,7 +6,6 @@ import { usePostsStore } from '@/stores/usePosts'
 import { onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-// Инициализируем сторы
 const profileStore = useProfileStore()
 const postsStore = usePostsStore()
 
@@ -14,22 +13,19 @@ const route = useRoute()
 const router = useRouter()
 const auth = useAuth()
 
-// 1. Получаем номер текущей страницы из URL. По умолчанию — 1.
 const page = computed(() => parseInt(route.query.page as string || '1'))
 
-// 2. Вычисляем общее количество страниц, используя данные из стора
 const pageSize = 6;
 const totalPages = computed(() => Math.ceil(postsStore.totalCount / pageSize))
 
-// 3. Следим за изменением страницы в URL и вызываем экшен стора
 watch(page, (newPage) => {
-  // Загружаем посты для новой страницы, только если профиль уже загружен
+  // Загружаем пости для нової сторінки, тільки якшо профіль вже загружен
   if (profileStore.profile?.username) {
     postsStore.fetchUserPosts(profileStore.profile.username, newPage)
   }
-}, { immediate: true }) // immediate: true - чтобы watch сработал сразу при загрузке компонента
+}, { immediate: true }) // immediate: true - щоб watch сработал відразу при загрузке компонента
 
-// 4. Загружаем данные самого профиля при монтировании
+// 4. Загружаем данні самого профіля при монтірованії
 onMounted(async () => {
   await auth.getSession()
   if (auth.status.value !== 'authenticated') {
@@ -38,8 +34,6 @@ onMounted(async () => {
 
   await profileStore.fetchProfile(auth)
 
-  // После загрузки профиля, watch выше уже должен был запустить загрузку постов
-  // для первой страницы. Если нет, можно добавить вызов здесь.
   if (profileStore.profile?.username && postsStore.posts.length === 0) {
      await postsStore.fetchUserPosts(profileStore.profile.username, page.value)
   }
@@ -57,12 +51,12 @@ function goToPage(pageNumber: number) {
 
 <template>
   <div class="container mt-5">
-    <!-- Пока профиль не загружен -->
+    <!-- Доки профіль не загружен -->
     <div v-if="!profileStore.profile">
-      <p class="text-center">Загрузка профиля...</p>
+      <p class="text-center">Загрузка профіля...</p>
     </div>
 
-    <!-- После загрузки профиля -->
+    <!-- Посля загрузки профіля -->
     <div v-else>
       <div class="card shadow-sm p-4 rounded-4">
         <div class="row align-items-center">
@@ -75,10 +69,10 @@ function goToPage(pageNumber: number) {
             />
           </div>
           <div class="col-md-9">
-            <h2>Привет, {{ profileStore.profile.username }}!</h2>
+            <h2>Привіт, {{ profileStore.profile.username }}!</h2>
             <p><strong>Email:</strong> {{ profileStore.profile.email }}</p>
             <NuxtLink to="/profile/edit" class="btn btn-primary mt-3">
-              Редактировать профиль
+              Редагування профіля
             </NuxtLink>
           </div>
         </div>
@@ -86,7 +80,7 @@ function goToPage(pageNumber: number) {
 
       <section class="all-posts">
         <div class="container">
-          <h3 class="my-4 text-center">Мои посты</h3>
+          <h3 class="my-4 text-center">Мої пости</h3>
           <div class="row">
             <div
               v-for="post in postsStore.posts"
@@ -97,7 +91,7 @@ function goToPage(pageNumber: number) {
             <NuxtLink :to="`/posts/${post.slug}`">
               <img
                 :src="post.image"
-                alt="Изображение поста"
+                alt="Зображення поста"
                 class="card-img-top"
               />
             </NuxtLink>
@@ -120,7 +114,7 @@ function goToPage(pageNumber: number) {
                     :to="`/posts/${post.slug}`"
                     class="btn btn-sm btn-outline-secondary"
                   >
-                    Подробнее
+                    Детальніше
                   </NuxtLink>
                 </div>
                 <small class="text-muted">

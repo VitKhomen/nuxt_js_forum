@@ -15,7 +15,7 @@
 const props = defineProps({
   title: {
     type: String,
-    default: 'Заголовок по умолчанию'
+    default: 'Заголовок за замовченням'
   }
 })
 </script>

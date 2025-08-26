@@ -5,13 +5,13 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-md-8">
-          <p class="lead">Чтобы связаться со мной, заполните форму обратной связи</p>
+          <p class="lead">Щоб звьязатись зі мною, заповніть форму зворотнього звьязку</p>
 
           <!-- Форма -->
           <form @submit.prevent="submitForm">
             <!-- Имя -->
             <div class="mb-3">
-              <label for="name">Имя</label>
+              <label for="name">ім'я</label>
               <input
                 v-model="form.name"
                 id="name"
@@ -45,9 +45,9 @@
               <div v-if="errors.subject" class="alert alert-danger">{{ errors.subject }}</div>
             </div>
 
-            <!-- Сообщение -->
+            <!-- Повідомлення -->
             <div class="mb-3">
-              <label for="message">Сообщение</label>
+              <label for="message">Повідомлення</label>
               <textarea
                 v-model="form.message"
                 id="message"
@@ -58,10 +58,10 @@
             </div>
 
             <!-- Кнопка -->
-            <button type="submit" class="btn btn-primary">Отправить</button>
+            <button type="submit" class="btn btn-primary">Відправити</button>
           </form>
 
-          <!-- Сообщение об успехе -->
+          <!-- Повідомлення про успіх -->
           <div v-if="successMessage" class="alert alert-success mt-4">
             {{ successMessage }}
           </div>
@@ -75,7 +75,7 @@
 import Header from '~/components/Header.vue'
 import { ref } from 'vue'
 
-// Модель формы
+// Модель форми
 const form = ref({
   name: '',
   email: '',
@@ -83,16 +83,16 @@ const form = ref({
   message: '',
 })
 
-const config = useRuntimeConfig() // Получаем доступ к конфигу
-const apiBase = config.public.apiBase // Наш базовый URL
+const config = useRuntimeConfig()
+const apiBase = config.public.apiBase
 
-// Ошибки и сообщение
+// помилки і повідомлення
 const errors = ref({})
 const successMessage = ref('')
 
 // Отправка формы
 async function submitForm() {
-  // Очищаем перед новой попыткой
+  // очищаємо перед новою спробою
   errors.value = {}
   successMessage.value = ''
 
@@ -106,14 +106,14 @@ async function submitForm() {
     })
 
     // Успех
-    successMessage.value = 'Сообщение успешно отправлено!'
+    successMessage.value = 'Повідомлення успішно відправлення!'
     form.value = { name: '', email: '', subject: '', message: '' }
   } catch (err) {
-    // Обработка ошибок валидации от DRF
+    // Обработка помилок валідації от DRF
     if (err?.data) {
       errors.value = err.data
     } else {
-      errors.value = { general: 'Что-то пошло не так. Попробуйте снова.' }
+      errors.value = { general: 'Щось пішло не так. Спробуйте ще.' }
     }
   }
 }

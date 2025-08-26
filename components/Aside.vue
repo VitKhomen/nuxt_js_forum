@@ -19,24 +19,24 @@
       </div>
     </div>
 
-    <!-- Последние статьи -->
+    <!-- Останні статі -->
+    <h5 class="card-header">Останні Пости</h5>
     <div
       v-for="post in posts"
       :key="post.slug"
-      class="card my-4"
+      class="card"
     >
-      <h5 class="card-header">Последние статьи</h5>
       <NuxtLink :to="`/posts/${post.slug}`">
-        <img :src="post.image" alt="Изображение поста" class="card-img-top" />
+        <img :src="post.image" alt="Зображення поста" class="card-img-top" />
       </NuxtLink>
       <div class="card-body">
         <h5 class="card-title">{{ post.title }}</h5>
         <p class="card-text" v-html="post.description"></p>
-        <NuxtLink :to="`/posts/${post.slug}`" class="card-link">Ссылка на статью</NuxtLink>
+        <NuxtLink :to="`/posts/${post.slug}`" class="card-link">Посилання на статю</NuxtLink>
       </div>
     </div>
 
-    <div v-if="!posts?.length" class="col-12 text-center">Нет постов для отображения.</div>
+    <div v-if="!posts?.length" class="col-12 text-center">Нема постів для відображення.</div>
   </div>
 </template>
 

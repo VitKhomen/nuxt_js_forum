@@ -67,10 +67,9 @@ const login = async () => {
       password: password.value,
     }, 
     { 
-      callbackUrl: '/' // Явно указываем URL для перенаправления
+      callbackUrl: '/' // Явно указуємо URL для перенапряму
     });
 
-    // Строка с navigateTo('/') здесь больше не нужна.
 
   } catch (err) {
     error.value = 'Невірний логін або пароль. Спробуйте ще раз.';
@@ -78,7 +77,7 @@ const login = async () => {
   }
 };
 
-// Автопереход при аутентификации (если уже залогинен)
+// Автоперехід при аутентифікації
 watch(status, (newStatus) => {
   if (newStatus === 'authenticated') {
     router.push('/')

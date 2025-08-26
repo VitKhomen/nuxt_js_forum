@@ -6,10 +6,10 @@ import 'next-auth'
 
 declare module 'next-auth' {
   /**
-   * Расширяем стандартную сессию, чтобы включить наши кастомные поля
+   * Росширюєм нашу сесію
    */
   interface Session {
-    // Структура `user` теперь соответствует тому, что у тебя в конфиге
+    // Структура `user` 
     user?: {
       id: string | number;
       username: string;

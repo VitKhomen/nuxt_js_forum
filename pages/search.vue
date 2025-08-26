@@ -3,9 +3,9 @@
     <Header :title="`Знайдено ${posts.length} постів по запиту: '${q}'`" />
 
     <div class="container mt-4">
-      <div v-if="pending">Загрузка...</div>
-      <div v-else-if="error">Ошибка загрузки :(</div>
-      <div v-else-if="!posts.length">Ничего не найдено</div>
+      <div v-if="pending">Завантаження...</div>
+      <div v-else-if="error">Помилка завантаження :(</div>
+      <div v-else-if="!posts.length">Нічого не знайдено</div>
 
       <div class="row">
         <div
@@ -35,8 +35,8 @@ const q = computed(() => route.query.q || '')
 const postsData = ref(null)
 const error = ref(null)
 const pending = ref(false)
-const config = useRuntimeConfig() // Получаем доступ к конфигу
-const apiBase = config.public.apiBase // Наш базовый URL
+const config = useRuntimeConfig()
+const apiBase = config.public.apiBase
 
 watchEffect(async () => {
   if (!q.value) {

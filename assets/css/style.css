@@ -25,13 +25,13 @@ body {
 }
 
 .carousel-item {
-    height: 20rem; /* или auto, или max-height */
-    text-align: center; /* если нужно центрировать */
+    height: 20rem; 
+    text-align: center;
 }
 
 .carousel-item img {
     height: 100%;
-    object-fit: cover; /* главное — вот это! */
+    object-fit: cover;
 }
 
 .main-content {

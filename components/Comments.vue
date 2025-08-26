@@ -1,8 +1,8 @@
 <template>
   <div>
-    <!-- Комментарии -->
+    <!-- Комментарі -->
     <div class="card my-4" v-if="isAuthenticated">
-      <h5 class="card-header">Оставить комментарий:</h5>
+      <h5 class="card-header">Залишити коментар:</h5>
       <div class="card-body">
         <form @submit.prevent="submitComment">
           <div class="form-group mb-3">
@@ -10,19 +10,19 @@
               v-model="newComment"
               rows="4"
               class="form-control rounded shadow-sm"
-              placeholder="Напишите что-нибудь..."
+              placeholder="Напиши що-небудь..."
             ></textarea>
           </div>
-          <button type="submit" class="btn btn-primary mt-2">Отправить</button>
+          <button type="submit" class="btn btn-primary mt-2">Відправити</button>
         </form>
       </div>
     </div>
     <div v-else class="mb-3">
-      <NuxtLink to="/login">Войдите</NuxtLink>, чтобы оставить комментарий.
+      <NuxtLink to="/login">Увійдіть щоб залишити коментар</NuxtLink>
     </div>
 
-    <!-- Список комментариев -->
-    <div v-if="commentStore.isLoading" class="text-center">Загрузка комментариев...</div>
+    <!-- Список коментарів -->
+    <div v-if="commentStore.isLoading" class="text-center">Загрузка коментарів...</div>
 
     <div v-else-if="commentStore.comments.length">
       <div v-for="comment in commentStore.comments" :key="comment.id" class="bg-light p-3 mb-3 rounded shadow-sm">
@@ -32,13 +32,13 @@
             <h5>{{ comment.author }}</h5>
             <small class="text-muted">{{ formatDate(comment.created_date) }}</small>
 
-            <!-- Если в режиме редактирования -->
+            <!-- якшо в режиме редагування -->
             <div v-if="editingId === comment.id">
               <textarea v-model="editText" rows="3" class="form-control mb-2"></textarea>
-              <button @click="handleUpdate(comment.id)" class="btn btn-sm btn-success me-2">💾 Сохранить</button>
-              <button @click="cancelEdit" class="btn btn-sm btn-secondary">❌ Отмена</button>
+              <button @click="handleUpdate(comment.id)" class="btn btn-sm btn-success me-2">💾 Зберегти</button>
+              <button @click="cancelEdit" class="btn btn-sm btn-secondary">❌ Відміна</button>
             </div>
-            <!-- Иначе обычный текст -->
+            <!-- Інакше звичайни текст -->
             <p v-else>{{ comment.text }}</p>
 
             <div v-if="comment.author === user.username">
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div v-else class="text-center">Пока нет комментариев.</div>
+    <div v-else class="text-center">Пока нема комментарів.</div>
   </div>
 </template>
 
@@ -75,7 +75,7 @@ const editText = ref('')
 onMounted(() => {
   console.log('Slug:', slug)
   if (!slug) {
-    console.error('Slug is undefined or null — невозможно отправить комментарий')
+    console.error('Slug is undefined or null — неможливо відправити коментар')
     return;
   }
   commentStore.fetchComments(slug)
@@ -101,7 +101,7 @@ function cancelEdit() {
 }
 
 async function waitForToken() {
-  // Пример ожидания токена (если токен загружается асинхронно)
+  // приклад загрузки токена
   while (!auth.token.value) {
     await new Promise(resolve => setTimeout(resolve, 100));
   }
@@ -117,7 +117,7 @@ async function handleUpdate(id) {
 }
 
 async function handleDelete(id) {
-  if (confirm('Вы уверены, что хотите удалить этот комментарий?')) {
+  if (confirm('ви впевнені шо хочете видалити коментар?')) {
     const tokenValue = await waitForToken();
     const token = tokenValue.replace(/^Bearer\s/, '');
     await commentStore.deleteComment(id, token);

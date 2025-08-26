@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5">
-    <h1>Редактирование поста</h1>
+    <h1>Редагування поста</h1>
 
     <form @submit.prevent="savePost" v-if="form">
       <div class="mb-3">
@@ -9,22 +9,22 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Краткое описание</label>
+        <label class="form-label">Короткий опис</label>
         <textarea v-model="form.description" class="form-control" rows="4"></textarea>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Полное содержимое</label>
+        <label class="form-label">Повна статя</label>
         <textarea v-model="form.content" class="form-control" rows="10"></textarea>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Теги (через запятую)</label>
+        <label class="form-label">Тегі (через кому)</label>
         <input v-model="tagsInput" class="form-control" />
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Изображение (не выбирай, если не меняешь)</label>
+        <label class="form-label">Зображення (не обирай, якшо не змінюєшь)</label>
         <input
           type="file"
           class="form-control"
@@ -32,7 +32,7 @@
         />
       </div>
 
-      <button type="submit" class="btn btn-success">💾 Сохранить</button>
+      <button type="submit" class="btn btn-success">💾 Зберегти</button>
     </form>
   </div>
 </template>
@@ -44,8 +44,8 @@ import { useRoute, useRouter } from 'vue-router'
 const auth = useAuth()
 const route = useRoute()
 const router = useRouter()
-const config = useRuntimeConfig() // Получаем доступ к конфигу
-const apiBase = config.public.apiBase // Наш базовый URL
+const config = useRuntimeConfig()
+const apiBase = config.public.apiBase
 
 const slug = route.params.slug as string
 const form = ref<any>(null)
@@ -65,21 +65,21 @@ interface Post {
 }
 
 interface Session {
-  user?: { // user может отсутствовать, поэтому он опциональный
+  user?: { // user може отсутствовать, тому він опциональний
     username: string;
-    // здесь могут быть и другие поля, например, email, id и т.д.
+    // тут можуть бути і інші поля, email, id и т.д.
   }
 }
 
 
-// Функция для удаления HTML-тегов из строки
+// Функція для видалення HTML-тегів з строки
 function stripHtml(html: string | null): string {
   if (!html) return ''
   const doc = new DOMParser().parseFromString(html, 'text/html')
   return doc.body.textContent || ''
 }
 
-// Загружаем пост
+// Загрузка поста
 onMounted(async () => {
   await auth.getSession()
 
@@ -89,11 +89,11 @@ onMounted(async () => {
 
   try {
     const post = await $fetch<Post>(`${apiBase}/posts/${slug}`)
-    // Проверка авторства
-     // ++ ИСПОЛЬЗУЕМ УТВЕРЖДЕНИЕ ТИПА ДЛЯ AUTH.DATA
+    // перевірка авторства
+     // ++ використовуємо затвердження типа для AUTH.DATA
     const currentUser = (auth.data.value as Session)?.user?.username
     if (post.author !== currentUser) {
-      alert('Вы не являетесь автором этого поста.')
+      alert('Ви не є автором цього поста.')
       return router.push('/')
     }
 
@@ -105,13 +105,13 @@ onMounted(async () => {
     }
     tagsInput.value = post.tags.join(', ')
   } catch (err) {
-    console.error('Ошибка загрузки поста', err)
-    alert('Ошибка загрузки поста')
+    console.error('Помилка загрузки поста', err)
+    alert('Помилка загрузки поста')
     router.push('/')
   }
 })
 
-// Сохраняем изменения
+// Зберегаємо зміни
 async function savePost() {
   const data = new FormData()
   data.append('title', form.value.title)
@@ -139,8 +139,8 @@ async function savePost() {
 
     router.push(`/posts/${slug}`)
   } catch (err) {
-    console.error('Ошибка при сохранении поста:', err)
-    alert('Не удалось сохранить пост')
+    console.error('Помилка при збереженні:', err)
+    alert('Невдалося зберегти пост')
   }
 }
 </script>

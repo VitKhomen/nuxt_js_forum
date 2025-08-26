@@ -11,24 +11,24 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="/img/slide_1.jpg" class="d-block w-100" alt="Первая картинка">
+                <img src="/img/slide_1.jpg" class="d-block w-100" alt="перша картинка">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>Это описание первого слайда</h5>
-                    <p>Тут можно писать все что угодно</p>
+                    <h5>Це опис першого слайда</h5>
+                    <p>Тут можна шось написати</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="/img/slide_2.jpg" class="d-block w-100" alt="Вторая картинка">
+                <img src="/img/slide_2.jpg" class="d-block w-100" alt="друга картинка">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>Это описание второго слайда</h5>
-                    <p>Тут можно писать все что угодно</p>
+                    <h5>Це опис другого слайда</h5>
+                    <p>пу пу пу</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="/img/slide_3.jpg" class="d-block w-100" alt="Третья картинка">
+                <img src="/img/slide_3.jpg" class="d-block w-100" alt="третя картинка">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>Это описание третьего слайда</h5>
-                    <p>Тут можно писать все что угодно</p>
+                    <h5>Це опис третього слайда</h5>
+                    <p>шось то</p>
                 </div>
             </div>
         </div>

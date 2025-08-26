@@ -1,75 +1,30 @@
-# Nuxt Minimal Starter
+🖥️ Nuxt.js Frontend для Форуму
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Це фронтенд частина форуму з авторизацією користувачів, профілем, постами, коментарями, тегами. 
+Працює разом із бекендом на Django REST Framework.
 
-## Setup
+- ⚙️ Framework: **Nuxt.js 3**
+- 🎨 UI: Bootstrap + кастомні стилі
+- 🔑 Авторизація: JWT (через бекенд)
+- 🌍 Хостинг: **Vercel**
+- 🗄️ API: Django REST (Render)
+- 📸 Зображення: Cloudinary
 
-Make sure to install dependencies:
+📌 Бекенд доступний тут:  
+https://github.com/VitKhomen/django_rest  
+https://django-rest-45pc.onrender.com/api
 
+---
+
+## 🚀 Деплой
+Фронтенд доступний за посиланням:  
+👉 https://nuxt-js-forum.vercel.app
+
+---
+
+## ⚙️ Локальний запуск
 ```bash
-# npm
+git clone https://github.com/VitKhomen/nuxt_js_forum.git
+cd nuxt_js_forum
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

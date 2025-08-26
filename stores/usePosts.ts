@@ -7,16 +7,16 @@ export const usePostsStore = defineStore('posts', () => {
   const prevPageUrl = ref<string | null>(null)
   const isLoading = ref(false)
 
-  // Убираем `auth` из параметров, будем получать его прямо в экшене
+  // Прибираємо `auth` из параметрів, будемо получать його прямо в екшені
   async function fetchUserPosts(username: string, page: number = 1) {
     if (!username) return;
 
     // ++ ШАГ 1: Получаем доступ к состоянию аутентификации
     const auth = useAuth() 
 
-    // ++ ШАГ 2: Проверяем, залогинен ли пользователь
+    // ++ ШАГ 2: Перевіряємо, залогинен лі користувач
     if (auth.status.value !== 'authenticated') {
-      console.warn('Пользователь не авторизован, запрос постов отменен.')
+      console.warn('Користувач не авторизован, запит постів відмінено.')
       return
     }
 
@@ -28,7 +28,7 @@ export const usePostsStore = defineStore('posts', () => {
       const response = await $fetch<{ count: number, next: string | null, previous: string | null, results: any[] }>(
         `${apiBase}/users/${username}/posts/?page=${page}`,
         {
-          // ++ ШАГ 3: Добавляем заголовок авторизации
+          // ++ ШАГ 3: Добавляем заголовок авторизації
           headers: {
             Authorization: auth.token.value || ''
           }

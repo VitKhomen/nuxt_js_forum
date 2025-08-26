@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5">
-    <h1>Создание нового поста</h1>
+    <h1>Створення поста</h1>
 
     <form @submit.prevent="createPost">
       <div class="mb-3">
@@ -9,22 +9,22 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Краткое описание</label>
+        <label class="form-label">Короткий опис</label>
         <textarea v-model="form.description" class="form-control" rows="4"></textarea>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Полное содержимое</label>
+        <label class="form-label">Повна статя</label>
         <textarea v-model="form.content" class="form-control" rows="10"></textarea>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Теги (через запятую)</label>
+        <label class="form-label">Теги (через кому)</label>
         <input v-model="tagsInput" class="form-control" />
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Изображение</label>
+        <label class="form-label">Зображення</label>
         <input
           type="file"
           class="form-control"
@@ -32,7 +32,7 @@
         />
       </div>
 
-      <button type="submit" class="btn btn-primary">🚀 Опубликовать</button>
+      <button type="submit" class="btn btn-primary">🚀 Опублікувати</button>
     </form>
   </div>
 </template>
@@ -43,8 +43,8 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const auth = useAuth()
-const config = useRuntimeConfig() // Получаем доступ к конфигу
-const apiBase = config.public.apiBase // Наш базовый URL
+const config = useRuntimeConfig()
+const apiBase = config.public.apiBase
 
 interface Post {
   id: number
@@ -91,11 +91,11 @@ async function createPost() {
       },
     })
 
-    router.push('/') // или на страницу нового поста
+    router.push('/') // чи сторінку нового поста
   } catch (err) {
-  // Выводим именно err.data, где лежат детали от DRF
-  console.error('Ошибка валидации от бэкенда:', err.data) 
-  alert('Не удалось создать пост. Подробности в консоли.')
+  // Выводимо err.data, де лежать деталі від DRF
+  console.error('Помилка валідації від бекенда:', err.data) 
+  alert('Не вдалося створити пост. Подробиці в консолі.')
 }
 }
 </script>

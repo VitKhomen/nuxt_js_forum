@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { useProfileStore } from '@/stores/useProfile'
 
 const router = useRouter()
-const auth = useAuth() // только тут
+const auth = useAuth()
 
 const profileStore = useProfileStore()
 
@@ -44,18 +44,18 @@ async function saveProfile() {
     await profileStore.updateProfile(auth, data)
     router.push('/profile')
   } catch (e) {
-    console.error('Ошибка при сохранении профиля:', e)
-    alert('Не удалось сохранить профиль')
+    console.error('Помилка при збереженні профіля:', e)
+    alert('Не вдалося зберегти профіль')
   }
 }
 </script>
 
 <template>
   <div class="container mt-5">
-    <h1>Редактирование профиля</h1>
+    <h1>Редагування профіля</h1>
     <form @submit.prevent="saveProfile">
       <div class="mb-3">
-        <label class="form-label">Имя пользователя</label>
+        <label class="form-label">Ім'я профіля</label>
         <input v-model="form.username" class="form-control" />
       </div>
 
@@ -71,7 +71,7 @@ async function saveProfile() {
                class="form-control" />
       </div>
 
-      <button type="submit" class="btn btn-success">Сохранить</button>
+      <button type="submit" class="btn btn-success">Зберегти</button>
     </form>
   </div>
 </template>

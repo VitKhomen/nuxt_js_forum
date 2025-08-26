@@ -11,7 +11,7 @@
         </div>
       </div>
       <div v-else>
-        <p>Нет постов с этим тегом.</p>
+        <p>Постів з цим тегом поки нема.</p>
       </div>
     </div>
   </div>
@@ -23,8 +23,8 @@ import Header from '~/components/Header.vue'
 
 const route = useRoute()
 const tagSlug = route.params.slug
-const config = useRuntimeConfig() // Получаем доступ к конфигу
-const apiBase = config.public.apiBase // Наш базовый URL
+const config = useRuntimeConfig()
+const apiBase = config.public.apiBase
 
 const { data } = await useFetch(`${apiBase}/tags/${tagSlug}`)
 const posts = data.value?.results || []

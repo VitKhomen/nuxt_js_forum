@@ -20,7 +20,7 @@
               <use xlink:href="#python" />
             </svg>
           </NuxtLink>
-          <span class="text-body-secondary">&copy; 2023 Агентство по разработке потрясных сайтов. А это просто блог-форум :).</span>
+          <span class="text-body-secondary">&copy; 2023 Це просто блог-форум :).</span>
         </div>
         <div class="col-lg-3 col-sm-12 my-3 d-flex justify-content-end">
           <ul class="nav list-unstyled">
@@ -32,7 +32,7 @@
               </a>
             </li>
             <li class="ms-2">
-              <a class="text-end" href="#" @click.prevent="scrollToTop">Наверх</a>
+              <a class="text-end" href="#" @click.prevent="scrollToTop">Нагору</a>
             </li>
           </ul>
         </div>

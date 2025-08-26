@@ -1,23 +1,22 @@
 // stores/useProfileStore.ts
 import { defineStore } from 'pinia'
 
-// ++ Определяем интерфейсы прямо здесь, чтобы файл был самодостаточным
-
-// Описываем, как выглядит объект пользователя внутри сессии
+// Описуємо обьект користувача в сессії
 interface UserProfile {
   id: string | number;
   username: string;
   email: string;
-  // Добавь сюда другие поля, если они есть (например, avatar: string)
+  avatar: string;
+  // можно добавить поnрібні поля
 }
 
-// Описываем, как выглядит объект данных сессии
+// Описуємо обьєкт сессії
 interface AuthSessionData {
   user: UserProfile;
 }
 
 export const useProfileStore = defineStore('profile', () => {
-  // Типизируем ref, он может содержать либо профиль, либо null
+  // Типизуємо ref, він може содержать лібо профіль, лібо null
   const profile = ref<UserProfile | null>(null)
 
   function setProfile(data: UserProfile | null) {
@@ -25,17 +24,15 @@ export const useProfileStore = defineStore('profile', () => {
   }
 
   async function fetchProfile(auth: ReturnType<typeof useAuth>) {
-    // Используем утверждение типа `as`, чтобы "объяснить" TypeScript структуру
+    // використовуємо `as` щоб обьяснить TypeScript структуру
     const session = auth.data.value as AuthSessionData | null;
 
-    // Проверяем статус и наличие пользователя в сессии
+    // перевіряємо статус і наявність користувача в сесії
     if (auth.status.value !== 'authenticated' || !session?.user) {
       profile.value = null
       return
     }
 
-    // ++ ОШИБКИ ЗДЕСЬ БОЛЬШЕ НЕ БУДЕТ
-    // Мы работаем с `session`, тип которого мы только что явно определили
     profile.value = session.user
   }
 

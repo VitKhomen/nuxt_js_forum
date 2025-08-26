@@ -4,8 +4,8 @@ export const useCommentStore = defineStore('comments', () => {
   const comments = ref([])
   const isLoading = ref(false)
   const error = ref(null)
-  const config = useRuntimeConfig() // Получаем доступ к конфигу
-  const apiBase = config.public.apiBase // Наш базовый URL
+  const config = useRuntimeConfig() // Получаем доступ к конфігу
+  const apiBase = config.public.apiBase // Наш базовий URL
   
 
   async function fetchComments(slug) {

@@ -44,7 +44,7 @@
                   + Пост
                 </NuxtLink>
                 <NuxtLink to="/profile" class="btn btn-outline-light btn-sm me-2">Профиль</NuxtLink>
-                <NuxtLink to="logout" class="btn btn-outline-light btn-sm me-2">Выход</NuxtLink>
+                <NuxtLink to="/logout" class="btn btn-outline-light btn-sm me-2">Выход</NuxtLink>
               </template>
 
               <!-- Если не залогинен -->

@@ -42,7 +42,7 @@
                 </div>
 
                 <!-- Кнопка -->
-                <button type="submit" class="btn btn-success">✅ Зареєструватися</button>
+                <button type="submit" class="btn btn-success">✅ Зареструватися</button>
               </form>
 
               <!-- Сообщения об ошибке и успехе -->
@@ -51,7 +51,7 @@
               </div>
 
               <div v-if="success" class="alert alert-success mt-3">
-                Реєстрація пройшла успішно! Тепер ви можете увійти.
+                Регістрація пройшла успішно! Тепер ви можете увійти.
               </div>
 
             </div>
@@ -80,13 +80,13 @@ const formData = ref({
 const errors = ref({})
 const serverError = ref('')
 const success = ref(false)
-const config = useRuntimeConfig() // Получаем доступ к конфигу
-const apiBase = config.public.apiBase // Наш базовый URL
+const config = useRuntimeConfig()
+const apiBase = config.public.apiBase 
 
 
 const fieldLabels = {
   username: 'Ім’я користувача',
-  email: 'Email',
+  email: 'Емейл',
   password: 'Пароль',
   password2: 'Підтвердіть пароль'
 }
@@ -105,7 +105,7 @@ const onFileChange = (e) => {
   }
 }
 
-// Отправка формы
+// Відправка формы
 const handleSubmit = async () => {
   errors.value = {}
   serverError.value = ''
@@ -135,7 +135,7 @@ const handleSubmit = async () => {
       return
     }
 
-    // Автоматически логиним:
+    // Автоматично логінім:
     await signIn({
       username: formData.value.username,
       password: formData.value.password
