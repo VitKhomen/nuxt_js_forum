@@ -24,33 +24,33 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="navbar-nav me-auto mb-2 mb-lg-0">
-            <NuxtLink to="/" class="nav-link active">Главная</NuxtLink>
-            <NuxtLink to="/contact" class="nav-link active">Контакты</NuxtLink>
+            <NuxtLink to="/" class="nav-link active">Головна</NuxtLink>
+            <NuxtLink to="/contact" class="nav-link active">Контакти</NuxtLink>
           </div>
 
           <div class="d-flex align-items-center">
             <form class="d-flex align-items-center" @submit.prevent="search">
-              <input v-model="q" class="form-control me-2" type="search" placeholder="Поиск..." />
-              <button class="btn btn-outline-success me-2" type="submit">Найти</button>
+              <input v-model="q" class="form-control me-2" type="search" placeholder="Пошук..." />
+              <button class="btn btn-outline-success me-2" type="submit">Знайти</button>
             </form>
 
             <div class="d-flex align-items-center flex-wrap justify-content-end text-center mb-2">
-              <!-- Если пользователь залогинен -->
+              <!-- Якшо користувач залогінен -->
               <template v-if="status === 'authenticated' && session">
                 <span class="navbar-text me-2 text-white">
-                  Привет, {{ session.user.username }}!
+                  Привіт, {{ session.user.username }}!
                 </span>
                 <NuxtLink to="/posts/create" class="btn btn-outline-light btn-sm me-2">
                   + Пост
                 </NuxtLink>
-                <NuxtLink to="/profile" class="btn btn-outline-light btn-sm me-2">Профиль</NuxtLink>
-                <NuxtLink to="/logout" class="btn btn-outline-light btn-sm me-2">Выход</NuxtLink>
+                <NuxtLink to="/profile" class="btn btn-outline-light btn-sm me-2">Профіль</NuxtLink>
+                <NuxtLink to="/logout" class="btn btn-outline-light btn-sm me-2">Виход</NuxtLink>
               </template>
 
-              <!-- Если не залогинен -->
+              <!-- Если не залогінен -->
               <template v-else>
-                <NuxtLink to="/login" class="btn btn-outline-light btn-sm me-2">Вход</NuxtLink>
-                <NuxtLink to="/register" class="btn btn-outline-light btn-sm me-2">Регистрация</NuxtLink>
+                <NuxtLink to="/login" class="btn btn-outline-light btn-sm me-2">Вхід</NuxtLink>
+                <NuxtLink to="/register" class="btn btn-outline-light btn-sm me-2">Регістрація</NuxtLink>
               </template>
             </div>
           </div>
@@ -68,7 +68,7 @@ const { status, data: session } = useAuth();
 const router = useRouter();
 
 
-// Поиск
+// Пошук
 const q = ref('');
 const search = () => {
   if (q.value.trim()) {
@@ -79,6 +79,3 @@ const search = () => {
 
 </script>
 
-<style scoped>
-/* Ваши стили */
-</style>

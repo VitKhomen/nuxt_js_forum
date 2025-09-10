@@ -32,7 +32,7 @@
               </a>
             </li>
             <li class="ms-2">
-              <a class="text-end" href="#" @click.prevent="scrollToTop">Нагору</a>
+              <a class="text-end" href="#" @click.prevent="scrollToTop">Вгору</a>
             </li>
           </ul>
         </div>
